@@ -16,6 +16,7 @@ class AuthNetClientServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config/auth_net_client.php' => config_path('auth_net_client.php')
         ], 'config');
+        $this->loadViewsFrom(__DIR__.'/templates', 'auth-net-client');
     }
 
     /**

@@ -12,4 +12,13 @@ class AuthNetClientTest extends TestCase
         $this->assertInstanceOf(AuthNetClient::class, $manager);
     }
 
+    public function testItCanCreatePaymentProfile()
+    {
+        $authnet = $this->app->make('TheLHC\AuthNetClient\AuthNetClient');
+        $profile = [
+            'merchant_customer_id' => 1
+        ];
+        $authnet->createProfile($profile);
+    }
+
 }
