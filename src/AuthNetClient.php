@@ -25,4 +25,10 @@ class AuthNetClient
         dd($payload);
     }
 
+    public function newProfile($attrs)
+    {
+        $profile = new Profile($attrs);
+        return $profile;
+    }
+
 }
