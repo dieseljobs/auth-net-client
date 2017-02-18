@@ -13,7 +13,11 @@ class CreditCard
 
     public function __get($key)
     {
-        return $this->values[ $key ];
+        if (isset($this->attributes[$key])) {
+            return $this->attributes[$key];
+        } else {
+            return null;
+        }
     }
 
     public function __set($key, $value)

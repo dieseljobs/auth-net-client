@@ -2,11 +2,16 @@
 
 namespace TheLHC\AuthNetClient;
 
+
 class Profile
 {
-    private $attributes = [];
 
-    public function __construct($attrs = [])
+    use ReturnsResponse;
+
+    private $attributes = [];
+    private $isNew;
+
+    public function __construct($attrs = [], $isNew = true)
     {
         if (isset($attrs['payment_profiles'])) {
             foreach($attrs['payment_profiles'] as $key => $pp) {
@@ -16,11 +21,16 @@ class Profile
             }
         }
         $this->attributes = $attrs;
+        $this->isNew = $isNew;
     }
 
     public function __get($key)
     {
-        return $this->values[ $key ];
+        if (isset($this->attributes[$key])) {
+            return $this->attributes[$key];
+        } else {
+            return null;
+        }
     }
 
     public function __set($key, $value)
@@ -32,5 +42,15 @@ class Profile
     {
         $payment_profile = new PaymentProfile($attrs);
         return $payment_profile;
+    }
+
+    public function toXML()
+    {
+        $template = $this->isNew ? "auth-net-client::create-profile" : "auth-net-client::update-profile";
+        $xml = view(
+            $template,
+            ['profile' => $this]
+        )->render();
+        return $xml;
     }
 }

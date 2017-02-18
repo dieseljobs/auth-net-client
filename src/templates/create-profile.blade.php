@@ -1,38 +1,19 @@
 <?xml version='1.0' encoding='utf-8'?>
 <createCustomerProfileRequest xmlns='AnetApi/xml/v1/schema/AnetApiSchema.xsd'>
-    <merchantAuthentication>
-        <name>{{$credentials['api_name']}}</name>
-        <transactionKey>{{$credentials['api_key']}}</transactionKey>
-    </merchantAuthentication>
+    @include("auth-net-client::authentication")
     <profile>
-        <merchantCustomerId>{{$profile['merchant_customer_id']}}</merchantCustomerId>
-        @if(isset($profile['description']))
-        <description>{{$profile['description']}}</description>
+        <merchantCustomerId>{{$profile->merchant_customer_id}}</merchantCustomerId>
+        @if($profile->description)
+        <description>{{$profile->description}}</description>
         @endif
-        @if(isset($profile['email']))
-        <email>{{$profile['email']}}</email>
+        @if($profile->email)
+        <email>{{$profile->email}}</email>
         @endif
-        @if(isset($profile['payment_profiles']))
+        @if($profile->payment_profiles)
         <paymentProfiles>
-            <customerType>business</customerType>
-            <billTo>
-                <firstName>{{$user->fname}}</firstName>
-                <lastName>{{$user->lname}}</lastName>
-                <company>{{$data['ccName']}}</company>
-                <address>{{$data['ccStreet']}}</address>
-                <city>{{$data['ccCity']}}</city>
-                <state>{{$data['ccState']}}</state>
-                <zip>{{$data['ccZip']}}</zip>
-                <phoneNumber>{{$data['ccPhone']}}</phoneNumber>
-            </billTo>
-            <payment>
-                <creditCard>
-                    <cardNumber>{{$data['ccNumber']}}</cardNumber>
-                    <expirationDate>
-                        {{$data['ccYear']}}-{{$data['ccMonth']}}
-                    </expirationDate>
-                </creditCard>
-            </payment>
+            @foreach($profile->payment_profiles as $payment_profile)
+            @include("auth-net-client::payment-profile", compact("payment_profile"))
+            @endforeach
         </paymentProfiles>
         @endif
     </profile>

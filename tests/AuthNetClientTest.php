@@ -40,9 +40,9 @@ class AuthNetClientTest extends TestCase
                 ]
             ]
         ];
-        //$authnet->createProfile($profile);
         $profile = $authnet->newProfile($profile);
-        dd($profile);
+        $response = $profile->post();
+        dd($response);
     }
 
 }
