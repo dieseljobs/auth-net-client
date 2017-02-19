@@ -29,14 +29,13 @@ class TestCase extends BaseTestCase
      */
     protected function getEnvironmentSetUp($app)
     {
-        //$dotenv = new Dotenv(__DIR__);
-        //$dotenv->load();
-        /*
+        $dotenv = new Dotenv(__DIR__);
+        $dotenv->load();
+
         $app['config']->set(
-            'cloud_search_query.endpoint',
-            getenv('ENDPOINT')
+            'auth_net_client.endpoint',
+            getenv('AUTHORIZENET_ENDPOINT')
         );
-        */
     }
 
     /**

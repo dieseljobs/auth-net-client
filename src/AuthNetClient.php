@@ -15,16 +15,6 @@ class AuthNetClient
         ];
     }
 
-    public function createProfile($profile)
-    {
-        $credentials = $this->credentials;
-        $payload = view(
-            'auth-net-client::create-profile',
-            compact('credentials', 'profile')
-        )->render();
-        dd($payload);
-    }
-
     public function newProfile($attrs)
     {
         $profile = new Profile($attrs);
