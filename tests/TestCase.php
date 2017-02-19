@@ -31,10 +31,17 @@ class TestCase extends BaseTestCase
     {
         $dotenv = new Dotenv(__DIR__);
         $dotenv->load();
-
         $app['config']->set(
             'auth_net_client.endpoint',
             getenv('AUTHORIZENET_ENDPOINT')
+        );
+        $app['config']->set(
+            'auth_net_client.api_name',
+            getenv('AUTHORIZENET_API_NAME')
+        );
+        $app['config']->set(
+            'auth_net_client.api_key',
+            getenv('AUTHORIZENET_API_KEY')
         );
     }
 

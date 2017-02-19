@@ -45,4 +45,20 @@ class AuthNetClientTest extends TestCase
         dd($response);
     }
 
+    public function testItCanUpdatePaymentProfile(){
+        /*
+        "messages" => array:2 [
+          "resultCode" => "Ok"
+          "message" => array:2 [
+            "code" => "I00001"
+            "text" => "Successful."
+          ]
+        ]
+        "customerProfileId" => "1810689705"
+        "customerPaymentProfileIdList" => array:1 [
+          "numericString" => "1805383335"
+        ]
+        */
+    }
+
 }
