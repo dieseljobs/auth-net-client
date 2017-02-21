@@ -11,6 +11,6 @@
         @if($profile->email)
         <email>{{$profile->email}}</email>
         @endif
-        <customerProfileId>{{$profile->id}}</customerProfileId>
+        <customerProfileId>{{$profile->customerProfileId}}</customerProfileId>
     </profile>
 </updateCustomerProfileRequest>

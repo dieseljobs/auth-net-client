@@ -66,33 +66,15 @@ class AuthNetClientTest extends TestCase
         $this->assertEquals("TheLHC\AuthNetClient\Profile", get_class($profile));
     }
 
-    public function testItCanUpdateProfile(){
-        $authnet = $this->app->make('TheLHC\AuthNetClient\AuthNetClient');
+    public function testItCanUpdateProfile()
+    {
+        $profile = Profile::find("1810689705");
         $attrs = [
-            "id" => "1810689705",
             "email" => "aaronkazman@email.com",
-            "description" => "aaron test profile"
+            "description" => "aaron test #".rand(1000, 10000)
         ];
-        $profile = $authnet->profile($attrs);
-        $response = $profile->update();
-        $this->assertEquals(true, isset($response->messages["resultCode"]));
-        $this->assertEquals("Ok", $response->messages["resultCode"]);
-        $this->assertEquals(true, isset($response->messages["message"]));
-        $this->assertEquals("Successful.", $response->messages["message"]["text"]);
-
-        /*
-        "messages" => array:2 [
-          "resultCode" => "Ok"
-          "message" => array:2 [
-            "code" => "I00001"
-            "text" => "Successful."
-          ]
-        ]
-        "customerProfileId" => "1810689705"
-        "customerPaymentProfileIdList" => array:1 [
-          "numericString" => "1805383335"
-        ]
-        */
+        $this->assertEquals(true, $profile->update($attrs));
+        $this->assertEquals($attrs["description"], $profile->description);
     }
 
     public function testItCanRetrievePaymentProfile()
@@ -100,7 +82,6 @@ class AuthNetClientTest extends TestCase
         $authnet = $this->app->make('TheLHC\AuthNetClient\AuthNetClient');
         $profile = $authnet->profile(["id" => "1810689705"]);
         $payment_profile = $profile->paymentProfiles("1805383335");
-
     }
 
 }
