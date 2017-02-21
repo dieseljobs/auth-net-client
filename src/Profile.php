@@ -44,13 +44,28 @@ class Profile
         return $payment_profile;
     }
 
-    public function toXML()
+    public function toXML($action)
     {
-        $template = $this->isNew ? "auth-net-client::create-profile" : "auth-net-client::update-profile";
+        switch ($action) {
+            case "create":
+                $template = "auth-net-client::create-profile";
+                break;
+            case "get":
+                $template = "auth-net-client::get-profile";
+                break;
+            case "update":
+                $template = "auth-net-client::update-profile";
+                break;
+        }
         $xml = view(
             $template,
             ['profile' => $this]
         )->render();
         return $xml;
+    }
+
+    public function payment_profiles($attrs = null)
+    {
+
     }
 }

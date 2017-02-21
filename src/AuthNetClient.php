@@ -15,7 +15,7 @@ class AuthNetClient
         ];
     }
 
-    public function newProfile($attrs)
+    public function profile($attrs)
     {
         $profile = new Profile($attrs);
         return $profile;

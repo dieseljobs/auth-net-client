@@ -16,7 +16,7 @@ class AuthNetClientTest extends TestCase
     {
         $authnet = $this->app->make('TheLHC\AuthNetClient\AuthNetClient');
         $profile = [
-            'merchant_customer_id' => 1,
+            'merchant_customer_id' => rand(1000, 10000),
             'payment_profiles' => [
                 [
                     'customer_type' => 'business',
@@ -40,12 +40,41 @@ class AuthNetClientTest extends TestCase
                 ]
             ]
         ];
-        $profile = $authnet->newProfile($profile);
-        $response = $profile->post();
-        dd($response);
+        $profile = $authnet->profile($profile);
+        $response = $profile->create();
+        $this->assertEquals(true, isset($response->messages["resultCode"]));
+        $this->assertEquals("Ok", $response->messages["resultCode"]);
+        $this->assertEquals(true, isset($response->messages["message"]));
+        $this->assertEquals("Successful.", $response->messages["message"]["text"]);
+        $this->assertEquals(true, !is_null($response->customerProfileId));
     }
 
-    public function testItCanUpdatePaymentProfile(){
+    public function testItCanRetrieveProfile()
+    {
+        $authnet = $this->app->make('TheLHC\AuthNetClient\AuthNetClient');
+        $profile = $authnet->profile(["id" => "1810689705"]);
+        $response = $profile->get();
+        $this->assertEquals(true, isset($response->messages["resultCode"]));
+        $this->assertEquals("Ok", $response->messages["resultCode"]);
+        $this->assertEquals(true, isset($response->messages["message"]));
+        $this->assertEquals("Successful.", $response->messages["message"]["text"]);
+        $this->assertEquals(true, is_array($response->profile));
+    }
+
+    public function testItCanUpdateProfile(){
+        $authnet = $this->app->make('TheLHC\AuthNetClient\AuthNetClient');
+        $attrs = [
+            "id" => "1810689705",
+            "email" => "aaronkazman@email.com",
+            "description" => "aaron test profile"
+        ];
+        $profile = $authnet->profile($attrs);
+        $response = $profile->update();
+        $this->assertEquals(true, isset($response->messages["resultCode"]));
+        $this->assertEquals("Ok", $response->messages["resultCode"]);
+        $this->assertEquals(true, isset($response->messages["message"]));
+        $this->assertEquals("Successful.", $response->messages["message"]["text"]);
+
         /*
         "messages" => array:2 [
           "resultCode" => "Ok"
@@ -59,6 +88,14 @@ class AuthNetClientTest extends TestCase
           "numericString" => "1805383335"
         ]
         */
+    }
+
+    public function testItCanRetrievePaymentProfile()
+    {
+        $authnet = $this->app->make('TheLHC\AuthNetClient\AuthNetClient');
+        $profile = $authnet->profile(["id" => "1810689705"]);
+        $payment_profile = $profile->payment_profiles("1805383335");
+        
     }
 
 }

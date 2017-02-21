@@ -7,6 +7,24 @@ use GuzzleHttp\Exception\RequestException;
 
 trait ReturnsResponse
 {
+    public function create()
+    {
+        $payload = $this->toXML("create");
+        return $this->postXMLPayload($payload);
+    }
+
+    public function get()
+    {
+        $payload = $this->toXML("get");
+        return $this->postXMLPayload($payload);
+    }
+
+    public function update()
+    {
+        $payload = $this->toXML("update");
+        return $this->postXMLPayload($payload);
+    }
+
     public function post()
     {
         $payload = $this->resolvePayload();
