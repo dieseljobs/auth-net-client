@@ -4,14 +4,19 @@ namespace TheLHC\AuthNetClient;
 
 class PaymentProfile
 {
-    private $attributes = [];
 
-    public function __construct($attrs = [])
+    use ReturnsResponse;
+
+    private $attributes = [];
+    private $original = [];
+
+    public function __construct($attrs = [], $exists = false)
     {
         if (isset($attrs['payment']) and is_array($attrs['payment'])) {
             $attrs['payment'] = $this->newPayment($attrs['payment']);
         }
         $this->attributes = $attrs;
+        if ($exists) $this->original = $attrs;
     }
 
     public function __get($key)
@@ -56,8 +61,29 @@ class PaymentProfile
         }
     }
 
-    public function toXML()
+    public function toXML($action)
     {
-        return "<test></test>";
+        switch ($action) {
+            case "create":
+                $template = "auth-net-client::create-payment-profile";
+                break;
+            case "get":
+                $template = "auth-net-client::get-payment-profile";
+                break;
+            case "update":
+                $template = "auth-net-client::update-payment-profile";
+                break;
+        }
+        $xml = view(
+            $template,
+            ['payment_profile' => $this]
+        )->render();
+        return $xml;
+    }
+
+    public function postCreateResponse($response)
+    {
+        // add paymentProfileId to object
+        $this->customerPaymentProfileId = $response->customerPaymentProfileId;
     }
 }

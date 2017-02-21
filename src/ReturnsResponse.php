@@ -12,7 +12,20 @@ trait ReturnsResponse
     public function create()
     {
         $payload = $this->toXML("create");
-        return $this->postXMLPayload($payload);
+        $response = $this->postXMLPayload($payload);
+        if (
+            $response->messages['resultCode'] == "Ok" &&
+            $response->messages['message']['code'] == "I00001"
+        ) {
+            if (method_exists($this, "postCreateResponse")) {
+                $this->postCreateResponse($response);
+            }
+            return true;
+        } else {
+            // set errors
+            $this->errors = $response->messages['message']['text'];
+            return false;
+        }
     }
 
     public function get()
@@ -30,7 +43,10 @@ trait ReturnsResponse
         }
         $payload = $this->toXML("update");
         $response = $this->postXMLPayload($payload);
-        if ($response->messages['resultCode'] == "Ok") {
+        if (
+            $response->messages['resultCode'] == "Ok" &&
+            $response->messages['message']['code'] == "I00001"
+        ) {
             return true;
         } else {
             // set errors

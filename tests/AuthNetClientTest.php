@@ -2,6 +2,7 @@
 
 use TheLHC\AuthNetClient\AuthNetClient;
 use TheLHC\AuthNetClient\Profile;
+use TheLHC\AuthNetClient\PaymentProfile;
 use TheLHC\AuthNetClient\Tests\TestCase;
 
 class AuthNetClientTest extends TestCase
@@ -82,6 +83,33 @@ class AuthNetClientTest extends TestCase
         $authnet = $this->app->make('TheLHC\AuthNetClient\AuthNetClient');
         $profile = $authnet->profile(["id" => "1810689705"]);
         $payment_profile = $profile->paymentProfiles("1805383335");
+    }
+
+    public function testItCanAddPaymentProfile()
+    {
+        $profile = Profile::find("1810689705");
+        $paymentProfile = new PaymentProfile([
+            'customerType' => 'business',
+            'billTo' => [
+                'firstName' => 'Aaron',
+                'lastName' => 'Kaczmarek',
+                'company' => 'WeaselJobs #'.rand(1000, 10000),
+                'address' => '747 Main St',
+                'city' => 'Westbrook',
+                'state' => 'ME',
+                'zip' => '04092',
+                'phoneNumber' => '828-301-9460'
+            ],
+            'payment' => [
+                'creditCard' => [
+                    'number' => '4012888818888',
+                    'year' => '202'.rand(1, 9),
+                    'month' => '0'.rand(1, 9)
+                ]
+            ]
+        ]);
+        $this->assertEquals(true, $profile->paymentProfiles()->save($paymentProfile));
+        $this->assertEquals(true, !is_null($paymentProfile->customerPaymentProfileId));
     }
 
 }

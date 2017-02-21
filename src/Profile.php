@@ -95,9 +95,15 @@ class Profile
         return $xml;
     }
 
-    public function paymentProfiles($attrs = null)
+    public function paymentProfiles()
     {
+        $collection = new Collection($this->paymentProfiles, $this);
+        return $collection;
+    }
 
+    public function getKey()
+    {
+        return "customerProfileId";
     }
 
 }
