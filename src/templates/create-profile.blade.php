@@ -9,9 +9,9 @@
         @if($profile->email)
         <email>{{$profile->email}}</email>
         @endif
-        @if($profile->payment_profiles)
+        @if($profile->paymentProfiles)
         <paymentProfiles>
-            @foreach($profile->payment_profiles as $payment_profile)
+            @foreach($profile->paymentProfiles as $payment_profile)
             @include("auth-net-client::payment-profile", compact("payment_profile"))
             @endforeach
         </paymentProfiles>

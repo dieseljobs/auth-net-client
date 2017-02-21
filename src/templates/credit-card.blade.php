@@ -1,6 +1,6 @@
 <creditCard>
-    <cardNumber>{{$credit_card->number}}</cardNumber>
+    <cardNumber>{{$creditCard->number}}</cardNumber>
     <expirationDate>
-        {{$credit_card->year}}-{{$credit_card->month}}
+        {{$creditCard->year}}-{{$creditCard->month}}
     </expirationDate>
 </creditCard>

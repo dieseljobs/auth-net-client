@@ -28,12 +28,28 @@ class PaymentProfile
         $this->attributes[$key] = $value;
     }
 
+    public function __toString()
+    {
+        if (isset($this->attributes['payment'])) {
+            $this->attributes['payment'] = (string)$this->attributes['payment'];
+        }
+        return json_encode($this->attributes);
+    }
+
+    public function toArray()
+    {
+        if (isset($this->attributes['payment'])) {
+            $this->attributes['payment'] = $this->attributes['payment']->toArray();
+        }
+        return $this->attributes;
+    }
+
     public function newPayment($attrs)
     {
         $type = array_keys($attrs)[0];
         $attrs = array_pop($attrs);
         switch ($type) {
-            case "credit_card":
+            case "creditCard":
                 return new CreditCard($attrs);
             default:
                 return null;

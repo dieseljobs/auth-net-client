@@ -25,4 +25,14 @@ class CreditCard
         $this->attributes[$key] = $value;
     }
 
+    public function __toString()
+    {
+        return json_encode($this->attributes);
+    }
+
+    public function toArray()
+    {
+        return $this->attributes;
+    }
+
 }

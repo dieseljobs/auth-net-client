@@ -1,26 +1,26 @@
 <billTo>
-    @if($bill_to->first_name)
-    <firstName>{{$bill_to->first_name}}</firstName>
+    @if($billTo->firstName)
+    <firstName>{{$billTo->firstName}}</firstName>
     @endif
-    @if($bill_to->last_name)
-    <lastName>{{$bill_to->last_name}}</lastName>
+    @if($billTo->lastName)
+    <lastName>{{$billTo->lastName}}</lastName>
     @endif
-    @if($bill_to->company)
-    <company>{{$bill_to->company}}</company>
+    @if($billTo->company)
+    <company>{{$billTo->company}}</company>
     @endif
-    @if($bill_to->address)
-    <address>{{$bill_to->address}}</address>
+    @if($billTo->address)
+    <address>{{$billTo->address}}</address>
     @endif
-    @if($bill_to->city)
-    <city>{{$bill_to->city}}</city>
+    @if($billTo->city)
+    <city>{{$billTo->city}}</city>
     @endif
-    @if($bill_to->state)
-    <state>{{$bill_to->state}}</state>
+    @if($billTo->state)
+    <state>{{$billTo->state}}</state>
     @endif
-    @if($bill_to->zip)
-    <zip>{{$bill_to->zip}}</zip>
+    @if($billTo->zip)
+    <zip>{{$billTo->zip}}</zip>
     @endif
-    @if($bill_to->phone_number)
-    <phoneNumber>{{$bill_to->phone_number}}</phoneNumber>
+    @if($billTo->phoneNumber)
+    <phoneNumber>{{$billTo->phoneNumber}}</phoneNumber>
     @endif
 </billTo>

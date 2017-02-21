@@ -9,19 +9,38 @@ class Profile
     use ReturnsResponse;
 
     private $attributes = [];
-    private $isNew;
+    private $original = [];
 
-    public function __construct($attrs = [], $isNew = true)
+    static public function find($customer_profile_id)
     {
-        if (isset($attrs['payment_profiles'])) {
-            foreach($attrs['payment_profiles'] as $key => $pp) {
-                if (is_array($pp)) {
-                    $attrs['payment_profiles'][$key] = $this->newPaymentProfile($pp);
+        $profile = new self(["id" => $customer_profile_id]);
+        $response = $profile->get();
+        if (is_null($response->profile)) return null;
+        $returnProfile = new self($response->profile, true);
+        return $returnProfile;
+    }
+
+    public function __construct($attrs = [], $exists = false)
+    {
+        if (isset($attrs['paymentProfiles'])) {
+            $pps = $attrs['paymentProfiles'];
+            unset($attrs['paymentProfiles']);
+            if (isset($pps[0])) {
+                // array of paymentProfiles
+                foreach($pps as $key => $pp) {
+                    if (is_array($pp)) {
+                        $attrs['paymentProfiles'][] = new PaymentProfile($pps[$key]);
+                    }
                 }
+            } else {
+                // single paymentProfile
+                $attrs['paymentProfiles'][] = new PaymentProfile($pps);
             }
         }
         $this->attributes = $attrs;
-        $this->isNew = $isNew;
+        if ($exists) {
+            $this->original = $attrs;
+        }
     }
 
     public function __get($key)
@@ -37,6 +56,18 @@ class Profile
     {
         $this->attributes[$key] = $value;
     }
+
+    public function __toString()
+    {
+        if (isset($this->attributes['paymentProfiles'])) {
+            foreach($this->attributes['paymentProfiles'] as $key => $pp) {
+                $this->attributes['paymentProfiles'][$key] = $pp->toArray();
+            }
+        }
+        return json_encode($this->attributes);
+    }
+
+
 
     public function newPaymentProfile($attrs)
     {
@@ -64,8 +95,9 @@ class Profile
         return $xml;
     }
 
-    public function payment_profiles($attrs = null)
+    public function paymentProfiles($attrs = null)
     {
 
     }
+
 }
