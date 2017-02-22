@@ -33,4 +33,12 @@ class Response
             return null;
         }
     }
+
+    public function isSuccess()
+    {
+        return (
+            $this->messages['resultCode'] == "Ok" &&
+            $this->messages['message']['code'] == "I00001"
+        );
+    }
 }

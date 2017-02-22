@@ -88,6 +88,9 @@ class PaymentProfile
             case "delete":
                 $template = "auth-net-client::delete-payment-profile";
                 break;
+            case "validate":
+                $template = "auth-net-client::validate-payment-profile";
+                break;
         }
         $xml = view(
             $template,
@@ -109,5 +112,16 @@ class PaymentProfile
     public function getKeyName()
     {
         return "customerPaymentProfileId";
+    }
+
+    public function validate()
+    {
+        $payload = $this->toXML("validate");
+        $response = $this->postXMLPayload($payload);
+        if ($response->isSuccess()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

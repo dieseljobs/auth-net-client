@@ -13,10 +13,7 @@ trait ReturnsResponse
     {
         $payload = $this->toXML("create");
         $response = $this->postXMLPayload($payload);
-        if (
-            $response->messages['resultCode'] == "Ok" &&
-            $response->messages['message']['code'] == "I00001"
-        ) {
+        if ($response->isSuccess()) {
             if (method_exists($this, "postCreateResponse")) {
                 $this->postCreateResponse($response);
             }
@@ -41,10 +38,7 @@ trait ReturnsResponse
         }
         $payload = $this->toXML("update");
         $response = $this->postXMLPayload($payload);
-        if (
-            $response->messages['resultCode'] == "Ok" &&
-            $response->messages['message']['code'] == "I00001"
-        ) {
+        if ($response->isSuccess()) {
             return true;
         } else {
             // set errors
@@ -59,10 +53,7 @@ trait ReturnsResponse
     {
         $payload = $this->toXML("delete");
         $response = $this->postXMLPayload($payload);
-        if (
-            $response->messages['resultCode'] == "Ok" &&
-            $response->messages['message']['code'] == "I00001"
-        ) {
+        if ($response->isSuccess()) {
             return true;
         } else {
             return false;
