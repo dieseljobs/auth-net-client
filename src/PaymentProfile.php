@@ -144,4 +144,19 @@ class PaymentProfile
             return false;
         }
     }
+
+    public function charge($amount, $transaction_attrs = [])
+    {
+        $transaction_attrs = array_merge(
+            [
+                "transactionType" => "authCaptureTransaction",
+                "amount" => $amount,
+                "paymentProfile" => $this
+            ],
+            $transaction_attrs
+        );
+        $transaction = new Transaction($transaction_attrs);
+        $transaction->create();
+        return $transaction;
+    }
 }

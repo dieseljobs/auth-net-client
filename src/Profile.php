@@ -2,7 +2,6 @@
 
 namespace TheLHC\AuthNetClient;
 
-
 class Profile
 {
 

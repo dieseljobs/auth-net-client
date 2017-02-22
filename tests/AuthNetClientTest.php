@@ -3,6 +3,7 @@
 use TheLHC\AuthNetClient\AuthNetClient;
 use TheLHC\AuthNetClient\Profile;
 use TheLHC\AuthNetClient\PaymentProfile;
+use TheLHC\AuthNetClient\Transaction;
 use TheLHC\AuthNetClient\Tests\TestCase;
 
 class AuthNetClientTest extends TestCase
@@ -158,5 +159,21 @@ class AuthNetClientTest extends TestCase
             "TheLHC\AuthNetClient\Collection",
             get_class($payment_profiles)
         );
+    }
+
+    public function testItCanChargePaymentProfile()
+    {
+        $payment_profile = PaymentProfile::find("1810689705", "1805383335");
+        $transaction = $payment_profile->charge("100.00", [
+            "order" => [
+                "invoiceNumber" => rand(1000, 10000),
+                "description" => "Test payment profile charge"
+            ]
+        ]);
+        $this->assertEquals(
+            "TheLHC\AuthNetClient\Transaction",
+            get_class($transaction)
+        );
+        $this->assertEquals(true, !is_null($transaction->transId));
     }
 }
