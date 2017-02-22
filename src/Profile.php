@@ -97,13 +97,30 @@ class Profile
 
     public function paymentProfiles()
     {
-        $collection = new Collection($this->paymentProfiles, $this);
+        $collection = new Collection($this->paymentProfiles, 'paymentProfiles', $this);
         return $collection;
     }
 
     public function getKey()
     {
         return "customerProfileId";
+    }
+
+    public function pushToArrAttr($key, $val)
+    {
+        $this->attributes[$key][] = $val;
+    }
+
+    public function postCreateResponse($response)
+    {
+        $this->customerProfileId = $response->customerProfileId;
+        if ($response->customerPaymentProfileIdList) {
+            $index = 0;
+            foreach($response->customerPaymentProfileIdList as $id) {
+                $this->attributes["paymentProfiles"][$index]->customerPaymentProfileId = $id;
+                $index++;
+            }
+        }
     }
 
 }

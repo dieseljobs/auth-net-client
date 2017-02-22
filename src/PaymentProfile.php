@@ -83,7 +83,6 @@ class PaymentProfile
 
     public function postCreateResponse($response)
     {
-        // add paymentProfileId to object
         $this->customerPaymentProfileId = $response->customerPaymentProfileId;
     }
 }
