@@ -4,6 +4,7 @@ namespace TheLHC\AuthNetClient;
 
 use IteratorAggregate;
 use ArrayIterator;
+use Illuminate\Support\Arr;
 
 class Collection implements IteratorAggregate
 {
@@ -37,11 +38,18 @@ class Collection implements IteratorAggregate
         return $response;
     }
 
+    public function find($key)
+    {
+        return Arr::first($this->items, function ($item) use ($key) {
+            return $item->getKey() == $key;
+        }, null);
+    }
+
     private function autosetParentKey(&$obj)
     {
         if (!($this->parent && method_exists($this->parent, "getKey"))) return;
-        $parentKey = $this->parent->getKey();
-        $parentVal = $this->parent->$parentKey;
+        $parentKey = $this->parent->getKeyName();
+        $parentVal = $this->parent->getKey();
         if (is_null($obj->$parentKey) && !empty($parentVal)) {
             $obj->$parentKey = $parentVal;
         }

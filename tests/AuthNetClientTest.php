@@ -95,13 +95,17 @@ class AuthNetClientTest extends TestCase
         $this->assertEquals(true, !is_null($paymentProfile->customerPaymentProfileId));
     }
 
-    /*
     public function testItCanRetrievePaymentProfile()
     {
-        $authnet = $this->app->make('TheLHC\AuthNetClient\AuthNetClient');
-        $profile = $authnet->profile(["id" => "1810689705"]);
-        $payment_profile = $profile->paymentProfiles("1805383335");
+        $payment_profile = PaymentProfile::find("1810689705", "1805383335");
+        $this->assertEquals("TheLHC\AuthNetClient\PaymentProfile", get_class($payment_profile));
     }
-    */
+
+    public function testItCanRetrievePaymentProfileFromCollection()
+    {
+        $profile = Profile::find("1810689705");
+        $payment_profile = $profile->paymentProfiles()->find("1805383335");
+        $this->assertEquals("TheLHC\AuthNetClient\PaymentProfile", get_class($payment_profile));
+    }
 
 }

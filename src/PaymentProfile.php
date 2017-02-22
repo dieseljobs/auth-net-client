@@ -10,6 +10,18 @@ class PaymentProfile
     private $attributes = [];
     private $original = [];
 
+    static public function find($customer_profile_id, $customer_payment_profile_id)
+    {
+        $payment_profile = new self([
+            "customerProfileId" => $customer_profile_id,
+            "customerPaymentProfileId" => $customer_payment_profile_id,
+        ]);
+        $response = $payment_profile->get();
+        if (is_null($response->paymentProfile)) return null;
+        $returnPaymentProfile = new self($response->paymentProfile, true);
+        return $returnPaymentProfile;
+    }
+
     public function __construct($attrs = [], $exists = false)
     {
         if (isset($attrs['payment']) and is_array($attrs['payment'])) {
@@ -84,5 +96,15 @@ class PaymentProfile
     public function postCreateResponse($response)
     {
         $this->customerPaymentProfileId = $response->customerPaymentProfileId;
+    }
+
+    public function getKey()
+    {
+        return $this->customerPaymentProfileId;
+    }
+
+    public function getKeyName()
+    {
+        return "customerPaymentProfileId";
     }
 }

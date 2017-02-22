@@ -13,7 +13,7 @@ class Profile
 
     static public function find($customer_profile_id)
     {
-        $profile = new self(["id" => $customer_profile_id]);
+        $profile = new self(["customerProfileId" => $customer_profile_id]);
         $response = $profile->get();
         if (is_null($response->profile)) return null;
         $returnProfile = new self($response->profile, true);
@@ -105,6 +105,11 @@ class Profile
     }
 
     public function getKey()
+    {
+        return $this->customerProfileId;
+    }
+
+    public function getKeyName()
     {
         return "customerProfileId";
     }
