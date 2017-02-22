@@ -45,7 +45,6 @@ class AuthNetClientTest extends TestCase
         $this->assertEquals(true, !is_null($paymentProfile->customerPaymentProfileId));
     }
 
-
     public function testItCanRetrieveProfile()
     {
         $profile = Profile::find("1810689705"); //1810720109
@@ -61,6 +60,12 @@ class AuthNetClientTest extends TestCase
         ];
         $this->assertEquals(true, $profile->update($attrs));
         $this->assertEquals($attrs["description"], $profile->description);
+    }
+
+    public function testItCanDeleteProfile()
+    {
+        $profile = Profile::find("1810720109");
+        $this->assertEquals(true, $profile->delete());
     }
 
     public function testItCanAddPaymentProfile()

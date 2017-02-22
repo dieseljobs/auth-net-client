@@ -87,6 +87,9 @@ class Profile
             case "update":
                 $template = "auth-net-client::update-profile";
                 break;
+            case "delete":
+                $template = "auth-net-client::delete-profile";
+                break;
         }
         $xml = view(
             $template,

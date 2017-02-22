@@ -57,22 +57,24 @@ trait ReturnsResponse
         }
     }
 
-    public function post()
+    public function delete()
     {
-        $payload = $this->resolvePayload();
-        return $this->postXMLPayload($payload);
-    }
-
-    public function resolvePayload()
-    {
-        return $this->toXML();
+        $payload = $this->toXML("delete");
+        $response = $this->postXMLPayload($payload);
+        if (
+            $response->messages['resultCode'] == "Ok" &&
+            $response->messages['message']['code'] == "I00001"
+        ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
      * Receive xml payload and setup http post request
      * Store all relevant data and catch response errors
      *
-     * @param  string $endPoint
      * @param  string $payload
      * @return void
      */
