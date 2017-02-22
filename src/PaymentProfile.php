@@ -22,6 +22,26 @@ class PaymentProfile
         return $returnPaymentProfile;
     }
 
+    static public function getList($params)
+    {
+        $instance = new self([]);
+        $payload = view(
+            "auth-net-client::get-payment-profile-list",
+            ['request' => (object)$params]
+        )->render();
+        $response = $instance->postXMLPayload($payload);
+        if ($response->isSuccess()) {
+            $paymentProfiles = [];
+            foreach($response->paymentProfiles['paymentProfile'] as $paymentProfile) {
+                $paymentProfiles[] = new self($paymentProfile, true);
+            }
+            $collection = new Collection($paymentProfiles);
+            return $collection;
+        } else {
+            return [];
+        }
+    }
+
     public function __construct($attrs = [], $exists = false)
     {
         if (isset($attrs['payment']) and is_array($attrs['payment'])) {

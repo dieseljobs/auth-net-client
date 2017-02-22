@@ -96,14 +96,20 @@ class AuthNetClientTest extends TestCase
     public function testItCanRetrievePaymentProfile()
     {
         $payment_profile = PaymentProfile::find("1810689705", "1805383335");
-        $this->assertEquals("TheLHC\AuthNetClient\PaymentProfile", get_class($payment_profile));
+        $this->assertEquals(
+            "TheLHC\AuthNetClient\PaymentProfile",
+            get_class($payment_profile)
+        );
     }
 
     public function testItCanRetrievePaymentProfileFromCollection()
     {
         $profile = Profile::find("1810689705");
         $payment_profile = $profile->paymentProfiles()->find("1805383335");
-        $this->assertEquals("TheLHC\AuthNetClient\PaymentProfile", get_class($payment_profile));
+        $this->assertEquals(
+            "TheLHC\AuthNetClient\PaymentProfile",
+            get_class($payment_profile)
+        );
     }
 
     public function testItCanUpdatePaymentProfile()
@@ -115,7 +121,10 @@ class AuthNetClientTest extends TestCase
             ]
         ];
         $this->assertEquals(true, $payment_profile->update($attrs));
-        $this->assertEquals($attrs["billTo"]["company"], $payment_profile->billTo["company"]);
+        $this->assertEquals(
+            $attrs["billTo"]["company"],
+            $payment_profile->billTo["company"]
+        );
     }
 
     public function testItCanDeletePaymentProfile()
@@ -130,4 +139,24 @@ class AuthNetClientTest extends TestCase
         $this->assertEquals(true, $payment_profile->validate());
     }
 
+    public function testItCanRetrieveProfileList()
+    {
+        $params = [
+            "searchType" => "cardsExpiringInMonth",
+            "month" => "2020-01",
+            "sorting" => [
+                "orderBy" => "id",
+                "orderDescending" => "false",
+            ],
+            "paging" => [
+                "limit" => 1000,
+                "offset" => 1
+            ]
+        ];
+        $payment_profiles = PaymentProfile::getList($params);
+        $this->assertEquals(
+            "TheLHC\AuthNetClient\Collection",
+            get_class($payment_profiles)
+        );
+    }
 }
