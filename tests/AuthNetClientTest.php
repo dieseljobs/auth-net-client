@@ -33,9 +33,8 @@ class AuthNetClientTest extends TestCase
             ],
             'payment' => [
                 'creditCard' => [
-                    'number' => '4007000000027',
-                    'year' => '2020',
-                    'month' => '01'
+                    'cardNumber' => '4007000000027',
+                    'expirationDate' => '2020-01',
                 ]
             ]
         ]);
@@ -85,9 +84,8 @@ class AuthNetClientTest extends TestCase
             ],
             'payment' => [
                 'creditCard' => [
-                    'number' => '4012888818888',
-                    'year' => '202'.rand(1, 9),
-                    'month' => '0'.rand(1, 9)
+                    'cardNumber' => '4012888818888',
+                    'expirationDate' => '202'.rand(1, 9).'0'.rand(1, 9),
                 ]
             ]
         ]);

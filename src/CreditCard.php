@@ -35,4 +35,9 @@ class CreditCard
         return $this->attributes;
     }
 
+    public function valid()
+    {
+        return ($this->number && $this->month && $this->year);
+    }
+
 }

@@ -40,7 +40,6 @@ trait ReturnsResponse
             $this->attributes = array_replace_recursive($this->attributes, $attrs);
         }
         $payload = $this->toXML("update");
-        dd($payload);
         $response = $this->postXMLPayload($payload);
         if (
             $response->messages['resultCode'] == "Ok" &&
