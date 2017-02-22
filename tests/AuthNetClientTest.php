@@ -118,4 +118,10 @@ class AuthNetClientTest extends TestCase
         $this->assertEquals($attrs["billTo"]["company"], $payment_profile->billTo["company"]);
     }
 
+    public function testItCanDeletePaymentProfile()
+    {
+        $payment_profile = PaymentProfile::find("1810720112", "1805415477");
+        $this->assertEquals(true, $payment_profile->delete());
+    }
+
 }

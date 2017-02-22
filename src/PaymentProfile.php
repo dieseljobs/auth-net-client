@@ -85,6 +85,9 @@ class PaymentProfile
             case "update":
                 $template = "auth-net-client::update-payment-profile";
                 break;
+            case "delete":
+                $template = "auth-net-client::delete-payment-profile";
+                break;
         }
         $xml = view(
             $template,
