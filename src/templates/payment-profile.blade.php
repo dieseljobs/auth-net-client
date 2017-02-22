@@ -7,3 +7,6 @@
     @include("auth-net-client::credit-card", ["creditCard" => $payment_profile->payment])
     @endif
 </payment>
+@if($payment_profile->customerPaymentProfileId)
+<customerPaymentProfileId>{{$payment_profile->customerPaymentProfileId}}</customerPaymentProfileId>
+@endif

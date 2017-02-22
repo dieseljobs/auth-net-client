@@ -108,4 +108,16 @@ class AuthNetClientTest extends TestCase
         $this->assertEquals("TheLHC\AuthNetClient\PaymentProfile", get_class($payment_profile));
     }
 
+    public function testItCanUpdatePaymentProfile()
+    {
+        $payment_profile = PaymentProfile::find("1810689705", "1805383335");
+        $attrs = [
+            'billTo' => [
+                'company' => 'WeaselJobs update #'.rand(1000, 10000),
+            ]
+        ];
+        $this->assertEquals(true, $payment_profile->update($attrs));
+        $this->assertEquals($attrs["billTo"]["company"], $payment_profile->billTo["company"]);
+    }
+
 }

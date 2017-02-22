@@ -37,11 +37,10 @@ trait ReturnsResponse
     public function update($attrs = null)
     {
         if ($attrs) {
-            foreach($attrs as $key => $val) {
-                $this->$key = $val;
-            }
+            $this->attributes = array_replace_recursive($this->attributes, $attrs);
         }
         $payload = $this->toXML("update");
+        dd($payload);
         $response = $this->postXMLPayload($payload);
         if (
             $response->messages['resultCode'] == "Ok" &&
