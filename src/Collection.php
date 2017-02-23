@@ -40,7 +40,10 @@ class Collection implements IteratorAggregate
 
     public function find($key)
     {
-        return Arr::first($this->items, function ($item) use ($key) {
+        return Arr::first($this->items, function ($index, $item) use ($key) {
+            if (!is_integer($index)) {
+                return $index->getKey() == $key;
+            }
             return $item->getKey() == $key;
         }, null);
     }
