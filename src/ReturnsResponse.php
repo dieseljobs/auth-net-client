@@ -7,8 +7,18 @@ use GuzzleHttp\Exception\RequestException;
 
 trait ReturnsResponse
 {
+    /**
+     * Response errors
+     *
+     * @var mixed
+     */
     public $errors;
 
+    /**
+     * Create action
+     *
+     * @return boolean
+     */
     public function create()
     {
         $payload = $this->toXML("create");
@@ -25,12 +35,23 @@ trait ReturnsResponse
         }
     }
 
+    /**
+     * Get action
+     *
+     * @return Response
+     */
     public function get()
     {
         $payload = $this->toXML("get");
         return $this->postXMLPayload($payload);
     }
 
+    /**
+     * Update action
+     *
+     * @param  array $attrs
+     * @return boolean
+     */
     public function update($attrs = null)
     {
         if ($attrs) {
@@ -49,6 +70,11 @@ trait ReturnsResponse
         }
     }
 
+    /**
+     * Delete action
+     *
+     * @return boolean
+     */
     public function delete()
     {
         $payload = $this->toXML("delete");

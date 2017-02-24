@@ -4,12 +4,15 @@ namespace TheLHC\AuthNetClient;
 
 class Profile
 {
-
+    use GetsAndSetsAttributes;
     use ReturnsResponse;
 
-    private $attributes = [];
-    private $original = [];
-
+    /**
+     * Static finder method to retrieve Profile instance from id
+     *
+     * @param  string $customer_profile_id
+     * @return Profile
+     */
     static public function find($customer_profile_id)
     {
         $profile = new self(["customerProfileId" => $customer_profile_id]);
@@ -19,6 +22,12 @@ class Profile
         return $returnProfile;
     }
 
+    /**
+     * Overload constructor
+     *
+     * @param array  $attrs
+     * @param boolean $exists
+     */
     public function __construct($attrs = [], $exists = false)
     {
         if (isset($attrs['paymentProfiles'])) {
@@ -42,20 +51,11 @@ class Profile
         }
     }
 
-    public function __get($key)
-    {
-        if (isset($this->attributes[$key])) {
-            return $this->attributes[$key];
-        } else {
-            return null;
-        }
-    }
-
-    public function __set($key, $value)
-    {
-        $this->attributes[$key] = $value;
-    }
-
+    /**
+     * Overload method
+     *
+     * @return string
+     */
     public function __toString()
     {
         if (isset($this->attributes['paymentProfiles'])) {
@@ -66,14 +66,12 @@ class Profile
         return json_encode($this->attributes);
     }
 
-
-
-    public function newPaymentProfile($attrs)
-    {
-        $payment_profile = new PaymentProfile($attrs);
-        return $payment_profile;
-    }
-
+    /**
+     * Resolve XML payload for action
+     *
+     * @param  string $action
+     * @return string
+     */
     public function toXML($action)
     {
         switch ($action) {
@@ -97,27 +95,43 @@ class Profile
         return $xml;
     }
 
+    /**
+     * Get child payment profiles as Collection instance
+     *
+     * @return Collection
+     */
     public function paymentProfiles()
     {
         $collection = new Collection($this->paymentProfiles, 'paymentProfiles', $this);
         return $collection;
     }
 
+    /**
+     * Get the unique key identifier for this object
+     *
+     * @return string
+     */
     public function getKey()
     {
         return $this->customerProfileId;
     }
 
+    /**
+     * Get the unique key identifier attribute name
+     *
+     * @return string
+     */
     public function getKeyName()
     {
         return "customerProfileId";
     }
 
-    public function pushToArrAttr($key, $val)
-    {
-        $this->attributes[$key][] = $val;
-    }
-
+    /**
+     * Add returned identifiers to object(s) after successful creation
+     *
+     * @param  Response $response
+     * @return void
+     */
     public function postCreateResponse($response)
     {
         $this->customerProfileId = $response->customerProfileId;

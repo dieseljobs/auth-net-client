@@ -4,34 +4,15 @@ namespace TheLHC\AuthNetClient;
 
 class Transaction
 {
-
+    use GetsAndSetsAttributes;
     use ReturnsResponse;
 
-    private $attributes = [];
-    private $original = [];
-
-    public function __construct($attrs = [], $exists = false)
-    {
-        $this->attributes = $attrs;
-        if ($exists) {
-            $this->original = $attrs;
-        }
-    }
-
-    public function __get($key)
-    {
-        if (isset($this->attributes[$key])) {
-            return $this->attributes[$key];
-        } else {
-            return null;
-        }
-    }
-
-    public function __set($key, $value)
-    {
-        $this->attributes[$key] = $value;
-    }
-
+    /**
+     * Resolve XML payload for action
+     *
+     * @param  string $action
+     * @return string
+     */
     public function toXML($action)
     {
         switch ($action) {
@@ -46,6 +27,12 @@ class Transaction
         return $xml;
     }
 
+    /**
+     * Add returned properties to instance after successful creation
+     *
+     * @param  Response $response
+     * @return void
+     */
     public function postCreateResponse($response)
     {
         foreach($response->transactionResponse as $key => $val) {

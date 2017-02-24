@@ -4,14 +4,39 @@ namespace TheLHC\AuthNetClient;
 
 class Response
 {
+    /**
+     * Http response
+     *
+     * @var GuzzleHttp\Psr7\Response
+     */
     private $httpResponse;
 
+    /**
+     * Response code from http response
+     *
+     * @var string
+     */
     private $responseCode;
 
+    /**
+     * Response body from http response
+     *
+     * @var string
+     */
     private $originalResponseBody;
 
+    /**
+     * Returned xml values as properties array
+     *
+     * @var array
+     */
     public $body;
 
+    /**
+     * Construct new instance from http response
+     *
+     * @param GuzzleHttp\Psr7\Response $httpResponse
+     */
     public function __construct($httpResponse)
     {
         $this->httpResponse = $httpResponse;
@@ -25,6 +50,12 @@ class Response
         $this->body = $arr;
     }
 
+    /**
+     * Get inaccessible attribute, map to body prop
+     *
+     * @param  string $key
+     * @return mixed
+     */
     public function __get($key)
     {
         if (isset($this->body[$key])) {
@@ -34,6 +65,11 @@ class Response
         }
     }
 
+    /**
+     * Helper to determine if response is success
+     *
+     * @return boolean 
+     */
     public function isSuccess()
     {
         return (

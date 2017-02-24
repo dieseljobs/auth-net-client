@@ -4,12 +4,17 @@ namespace TheLHC\AuthNetClient;
 
 class PaymentProfile
 {
-
+    use GetsAndSetsAttributes;
     use ReturnsResponse;
 
-    private $attributes = [];
-    private $original = [];
-
+    /**
+     * Static finder method, returns new instance of self from profile and
+     * payment profile ids
+     *
+     * @param  string $customer_profile_id
+     * @param  string $customer_payment_profile_id
+     * @return PaymentProfile
+     */
     static public function find($customer_profile_id, $customer_payment_profile_id)
     {
         $payment_profile = new self([
@@ -22,6 +27,12 @@ class PaymentProfile
         return $returnPaymentProfile;
     }
 
+    /**
+     * Special method to retrieve a collection of PaymentProfile instances
+     *
+     * @param  array $params
+     * @return Collection
+     */
     static public function getList($params)
     {
         $instance = new self([]);
@@ -42,6 +53,12 @@ class PaymentProfile
         }
     }
 
+    /**
+     * Overload constructor
+     *
+     * @param array  $attrs
+     * @param boolean $exists
+     */
     public function __construct($attrs = [], $exists = false)
     {
         if (isset($attrs['payment']) and is_array($attrs['payment'])) {
@@ -51,20 +68,11 @@ class PaymentProfile
         if ($exists) $this->original = $attrs;
     }
 
-    public function __get($key)
-    {
-        if (isset($this->attributes[$key])) {
-            return $this->attributes[$key];
-        } else {
-            return null;
-        }
-    }
-
-    public function __set($key, $value)
-    {
-        $this->attributes[$key] = $value;
-    }
-
+    /**
+     * Overload method
+     *
+     * @return string
+     */
     public function __toString()
     {
         if (isset($this->attributes['payment'])) {
@@ -73,6 +81,11 @@ class PaymentProfile
         return json_encode($this->attributes);
     }
 
+    /**
+     * Overload toArray()
+     *
+     * @return array
+     */
     public function toArray()
     {
         if (isset($this->attributes['payment'])) {
@@ -81,6 +94,12 @@ class PaymentProfile
         return $this->attributes;
     }
 
+    /**
+     * Resolve payment class from input and return new instance
+     *
+     * @param  array $attrs
+     * @return mixed
+     */
     public function newPayment($attrs)
     {
         $type = array_keys($attrs)[0];
@@ -93,6 +112,12 @@ class PaymentProfile
         }
     }
 
+    /**
+     * Resolve XML payload for action
+     *
+     * @param  string $action
+     * @return string
+     */
     public function toXML($action)
     {
         switch ($action) {
@@ -119,21 +144,42 @@ class PaymentProfile
         return $xml;
     }
 
+    /**
+     * Add customerPaymentProfileId to object after successful creation
+     *
+     * @param  Response $response
+     * @return void
+     */
     public function postCreateResponse($response)
     {
         $this->customerPaymentProfileId = $response->customerPaymentProfileId;
     }
 
+    /**
+     * Get the unique key identifier for this object
+     *
+     * @return string
+     */
     public function getKey()
     {
         return $this->customerPaymentProfileId;
     }
 
+    /**
+     * Get the unique key identifier attribute name
+     *
+     * @return string
+     */
     public function getKeyName()
     {
         return "customerPaymentProfileId";
     }
 
+    /**
+     * Special method to validate payment profile on file is valid
+     *
+     * @return boolean
+     */
     public function validate()
     {
         $payload = $this->toXML("validate");
@@ -145,6 +191,14 @@ class PaymentProfile
         }
     }
 
+    /**
+     * Method to charge payment profile amount
+     * $transaction_attrs should match possible properties in API documentation 
+     *
+     * @param  string $amount
+     * @param  array $transaction_attrs
+     * @return Transaction
+     */
     public function charge($amount, $transaction_attrs = [])
     {
         $transaction_attrs = array_merge(

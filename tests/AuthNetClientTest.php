@@ -4,16 +4,18 @@ use TheLHC\AuthNetClient\AuthNetClient;
 use TheLHC\AuthNetClient\Profile;
 use TheLHC\AuthNetClient\PaymentProfile;
 use TheLHC\AuthNetClient\Transaction;
+use TheLHC\AuthNetClient\CreditCard;
 use TheLHC\AuthNetClient\Tests\TestCase;
 
 class AuthNetClientTest extends TestCase
 {
-
+    /*
     public function testCanResolveFromTheContainer()
     {
         $manager = $this->app->make('TheLHC\AuthNetClient\AuthNetClient');
         $this->assertInstanceOf(AuthNetClient::class, $manager);
     }
+    */
 
     public function testItCanCreatePaymentProfile()
     {
@@ -176,4 +178,5 @@ class AuthNetClientTest extends TestCase
         );
         $this->assertEquals(true, !is_null($transaction->transId));
     }
+
 }

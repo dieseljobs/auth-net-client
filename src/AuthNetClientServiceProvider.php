@@ -27,10 +27,6 @@ class AuthNetClientServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/auth_net_client.php', 'auth_net_client');
-
-        $this->app->bind(AuthNetClient::class, function ($app) {
-            return new AuthNetClient();
-        });
     }
 
 }
